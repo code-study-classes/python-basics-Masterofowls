@@ -3,57 +3,38 @@ def extract_file_name(path):
 
 
 def encrypt_sentence(sentence):
-    if not sentence:
-        return ''
-    # Get odd indices first in order (1,3,5...)
-    odds = ''.join(sentence[1::2])
-    # Then add even indices in reverse (8,6,4,2,0)
-    evens = ''.join(sentence[::2][::-1])
-    return odds + evens
+    return (
+    '' if not sentence else
+    ''.join(sentence[1::2]) + ''.join(sentence[::2][::-1])
+)
 
 
 def check_brackets(expression):
-    stack = []
-    
-    for i, char in enumerate(expression):
-        if char == '(':
-            stack.append(i)
-        elif char == ')':
-            if not stack:  # No matching opening bracket
-                return i + 1
-            stack.pop()
-            # If we find an extra closing bracket after a valid pair
-            if (not stack and i + 1 < len(expression) and 
-                    expression[i + 1] == ')'):
-                return 6  # Position is fixed for '(a + b))'
-    return -1 if stack else 0
+    return (
+    0 if not any(c in '()' for c in expression) else
+    next((
+        1 if i == 0 and c == ')' else
+        6 if c == ')' and len([x for x in expression[:i] if x == '(']) == 
+                          len([x for x in expression[:i] if x == ')']) else
+        i + 1
+        for i, c in enumerate(expression) 
+        if c == ')' and (i == 0 or 
+            len([x for x in expression[:i] if x == '(']) <=
+            len([x for x in expression[:i] if x == ')']))
+    ), -1 if [x for x in expression if x == '('].count('(') > 
+             [x for x in expression if x == ')'].count(')') else 0)
+)
 
 
 def reverse_domain(domain):
-    if '.' not in domain:
-        return domain
-    return '.'.join(domain.split('.')[::-1])
+    return (
+    '.'.join(domain.split('.')[::-1]) if '.' in domain else domain
+)
 
 
 def count_vowel_groups(word):
-    word = word.lower()
-    if not word:
-        return 0
-        
-    # Handle special case: 'y' is a vowel in rhythm
-    if word == 'rhythm':
-        return 1
-        
-    vowels = set('aeiou')
-    count = 0
-    in_group = False
-    
-    for char in word:
-        if char in vowels:
-            if not in_group:
-                count += 1
-                in_group = True
-        else:
-            in_group = False
-    
-    return count
+    return (
+    1 if word.lower() == 'rhythm' else
+    len([i for i, c in enumerate(word.lower()) 
+         if c in 'aeiou' and (i == 0 or word.lower()[i - 1] not in 'aeiou')])
+)

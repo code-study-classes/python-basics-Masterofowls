@@ -7,17 +7,18 @@ def check_odd_three(n):
 
 
 def check_unique_digits(n):
-    return ((99 < abs(n) < 1000) and 
-            len(set(str(abs(n)))) == 3)
+    return (
+    99 < abs(n) < 1000 and len(set(str(abs(n)))) == 3
+)
 
 
 def check_palindrome_number(n):
-    s = str(abs(n))
-    return s == s[::-1]
+    return str(abs(n)) == str(abs(n))[::-1]
 
 
 def check_ascending_digits(n):
-    if not (99 < abs(n) < 1000):
-        return False
-    digits = str(abs(n))
-    return all(int(d1) < int(d2) for d1, d2 in zip(digits, digits[1:]))
+    return (
+    all(map(lambda x: x[0] < x[1], 
+            zip(map(int, str(abs(n))), map(int, str(abs(n))[1:]))))
+    if 99 < abs(n) < 1000 else False
+)
