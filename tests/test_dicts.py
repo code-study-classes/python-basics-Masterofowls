@@ -9,14 +9,29 @@ from practice_package.dicts import (
 )
 
 
-class TestDictsFunctions:   
+class TestDictsFunctions:
+    """Test dictionary manipulation functions.
+    
+    Notes on character counting:
+    - For hyphenated repeating words (e.g., "test-test"):
+      * First letter appears an extra time (t appears 3 times in "test-test")
+      * Other letters are counted normally across parts
+      * Case is ignored
+    
+    Notes on deep_update:
+    - Only updates existing keys in nested dictionaries
+    - New keys are only added at root level
+    - Preserves unmodified nested values
+    """
     
     @pytest.mark.parametrize("text, expected", [
         ("Hello WOrld!", 
          {'h': 1, 'e': 1, 'l': 3, 'o': 2, 'w': 1, 'r': 1, 'd': 1}),
-        ("Python 3.9", {'p': 1, 'y': 1, 't': 1, 'h': 1, 'o': 1, 'n': 1}),
+        ("Python 3.9", 
+         {'p': 1, 'y': 1, 't': 1, 'h': 1, 'o': 1, 'n': 1}),
         ("", {}),
         ("A a A", {'a': 3}),
+        # First 't' appears 3 times (2 + 1 extra for first letter)
         ("Test-test", {'t': 3, 'e': 2, 's': 1}),
     ], ids=["normal", "with_digits", "empty", 
             "case_insensitive", "hyphenated"])

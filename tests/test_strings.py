@@ -10,6 +10,13 @@ from practice_package.strings import (
 
 
 class TestStringsFunctions:
+    """Test string manipulation functions.
+    
+    Notes on vowel handling:
+    - 'y' is considered a vowel only in words without other vowels
+      (like 'rhythm')
+    - Otherwise, only a, e, i, o, u are considered vowels
+    """
     
     @pytest.mark.parametrize("path, expected", [
         ('C:/Users/example.txt', 'example'),
@@ -55,12 +62,12 @@ class TestStringsFunctions:
         assert reverse_domain(domain) == reversed_domain
     
     @pytest.mark.parametrize("word, count", [
-        ('JavaScript', 3),
-        ('HeLLO', 2),
-        ('rhythm', 1),
-        ('AeIoU', 1), 
-        ('xyz', 0), 
-        ('', 0), 
+        ('JavaScript', 3),  # Groups: a, i, a
+        ('HeLLO', 2),      # Groups: e, o
+        ('rhythm', 1),     # Groups: y (special case - no other vowels)
+        ('AeIoU', 1),      # One continuous group of vowels
+        ('xyz', 0),        # y is not a vowel here
+        ('', 0),           # Empty string
     ], ids=["mixed_case", "all_upper", "only_y", 
             "all_vowels", "no_vowels", "empty"])
     def test_count_vowel_groups(self, word, count):

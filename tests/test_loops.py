@@ -9,7 +9,17 @@ from practice_package.loops import (
 
 
 class TestLoopsFunctions:
-
+    """Test loop-based functions.
+    
+    Notes on vowel triplet handling:
+    - A triplet is any 3 consecutive vowels (a,e,i,o,u)
+    - 'y' is only counted in the sequence 'yyy'
+    - Overlapping sequences count separately if they don't share more than
+      1 vowel:
+      e.g., "Queueing" -> "uee" and "eei" count as 2 triplets
+      but "AeIoU" -> counts as 1 triplet since they all form one group
+    """
+    
     @pytest.mark.parametrize("number, expected", [
         (123456, 12),
         (-13579, 0),
@@ -24,14 +34,14 @@ class TestLoopsFunctions:
         assert sum_even_digits(number) == expected
     
     @pytest.mark.parametrize("text, expected", [
-        ("Beautiful day", 1),
-        ("Queueing", 2),
-        ("Python", 0),
-        ("AeIoU", 1),
-        ("", 0),
-        ("YyY", 1),
-        ("Hello world", 0),
-    ], ids=["normal", "double", "no_vowels", 
+        ("Beautiful day", 1),    # eau = 1 triplet
+        ("Queueing", 2),        # uee, eei = 2 triplets (overlapping allowed)
+        ("Python", 0),          # no triplets (y not counted)
+        ("AeIoU", 1),          # counts as 1 continuous triplet
+        ("", 0),               # empty string
+        ("YyY", 1),            # special case: yyy counts as triplet
+        ("Hello world", 0),     # no triplets
+    ], ids=["normal", "double", "no_vowels",
             "all_vowels", "empty", "only_y", "spaces"])
     def test_count_vowel_triplets(self, text, expected):
         assert count_vowel_triplets(text) == expected
