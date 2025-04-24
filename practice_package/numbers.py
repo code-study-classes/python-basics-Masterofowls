@@ -1,4 +1,5 @@
-calculate_distance = lambda x1, x2: abs(x1 - x2)
+def calculate_distance(x1, x2):
+    return abs(x1 - x2)
 
 
 def calculate_segments(a, b):

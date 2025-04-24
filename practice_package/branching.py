@@ -1,13 +1,20 @@
 def is_weekend(day):
     return day in (6, 7)
 
+
 def get_discount(amount):
-    return round((amount >= 5000 and amount * 0.1) or (amount >= 1000 and amount * 0.05) or 0, 2)
+    if amount >= 5000:
+        return round(amount * 0.1, 2)
+    elif amount >= 1000:
+        return round(amount * 0.05, 2)
+    return 0
+
 
 def describe_number(n):
     parity = "четное" if n % 2 == 0 else "нечетное"
     digits = {1: "однозначное", 2: "двузначное", 3: "трехзначное"}
     return f"{parity} {digits[len(str(n))]} число"
+
 
 def convert_to_meters(unit_number, length_in_units):
     conversion = {
@@ -18,6 +25,7 @@ def convert_to_meters(unit_number, length_in_units):
         5: 0.01       # сантиметр
     }
     return length_in_units * conversion[unit_number]
+
 
 def describe_age(age):
     tens = {
